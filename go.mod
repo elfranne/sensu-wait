@@ -1,6 +1,6 @@
 module github.com/elfranne/sensu-wait
 
-go 1.20
+go 1.18
 
 require (
 	github.com/sensu/sensu-go/api/core/v2 v2.14.0
