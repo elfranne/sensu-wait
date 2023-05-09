@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/sensu/sensu-go/types"
+	corev2 "github.com/sensu/sensu-go/api/core/v2"
 	"github.com/sensu/sensu-plugin-sdk/sensu"
 )
 
@@ -45,12 +45,12 @@ func main() {
 	handler.Execute()
 }
 
-func checkArgs(_ *types.Event) error {
+func checkArgs(event *corev2.Event) error {
 	// nothing really to check, default is 1 second, type is integer
 	return nil
 }
 
-func executeHandler(event *types.Event) error {
+func executeHandler(event *corev2.Event) error {
 	time.Sleep(time.Duration(plugin.Wait) * time.Second)
 	log.Printf("Waiting for %v seconds", plugin.Wait)
 	return nil
