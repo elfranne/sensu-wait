@@ -5,6 +5,7 @@
 *.so
 *.dylib
 sensu-wait
+go.sum
 
 # Test binary, build with `go test -c`
 *.test
