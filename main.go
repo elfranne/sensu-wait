@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"time"
 
 	corev2 "github.com/sensu/sensu-go/api/core/v2"
 	"github.com/sensu/sensu-plugin-sdk/sensu"
@@ -11,8 +11,12 @@ import (
 // Config represents the handler plugin config.
 type Config struct {
 	sensu.PluginConfig
-	Example string
+	Wait int
 }
+
+const (
+	wait = 1
+)
 
 var (
 	plugin = Config{
@@ -24,14 +28,14 @@ var (
 	}
 
 	options = []sensu.ConfigOption{
-		&sensu.PluginConfigOption[string]{
-			Path:      "example",
-			Env:       "HANDLER_EXAMPLE",
-			Argument:  "example",
-			Shorthand: "e",
-			Default:   "",
-			Usage:     "An example string configuration option",
-			Value:     &plugin.Example,
+		&sensu.PluginConfigOption[int]{
+			Path:      "wait",
+			Env:       "SENSU_WAIT",
+			Argument:  "wait",
+			Shorthand: "-w",
+			Default:   int(wait),
+			Usage:     "Time to wait in seconds",
+			Value:     &plugin.Wait,
 		},
 	}
 )
@@ -42,13 +46,12 @@ func main() {
 }
 
 func checkArgs(event *corev2.Event) error {
-	if len(plugin.Example) == 0 {
-		return fmt.Errorf("--example or HANDLER_EXAMPLE environment variable is required")
-	}
+	// nothing really to check, default is 1 second, type is integer
 	return nil
 }
 
 func executeHandler(event *corev2.Event) error {
-	log.Println("executing handler with --example", plugin.Example)
+	time.Sleep(time.Duration(plugin.Wait) * time.Second)
+	log.Printf("Waiting for %v seconds", plugin.Wait)
 	return nil
 }
