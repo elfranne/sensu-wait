@@ -15,7 +15,8 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: 1.18
-      id: go
+        go-version-file: 'go.mod'
+    - name: Get Go modules
+      run: go get
     - name: Test
       run: go test -v ./...
